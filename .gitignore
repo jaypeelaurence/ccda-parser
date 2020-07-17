@@ -1,0 +1,9 @@
+/build
+/node_modules
+
+.env
+package-lock.json
+
+src/files/*
+
+!src/files/index*
