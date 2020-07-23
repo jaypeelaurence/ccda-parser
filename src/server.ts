@@ -4,7 +4,7 @@ import { Parser } from 'xml2js';
 import { Import } from './ccda';
 
 const file = `HL7 Samples/01 CCD-Sample.xml`;
-// const file = `HL7 Samples/CCD.sample.xml`;
+// const file = `HL7 Samples/02 DischargeSummary.xml`;
 
 const file_path = fs.readFileSync(`${__dirname.split(`\\`).splice(0, 3).join(`\\`)}/src/files/${file}`)
 

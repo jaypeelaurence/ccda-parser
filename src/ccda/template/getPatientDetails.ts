@@ -20,20 +20,20 @@ export default function getPatientDetails(recordTarget) {
 
   if (id) {
     if (Array.isArray(id)) {
-      const patientId = id.find(given => given.$.root === '2.16.840.1.113883.4.1');
+      const patientId = id.find(patId => patId._attributes.root === '2.16.840.1.113883.4.1');
 
       if (patientId) {
-        patientDetails.id = patientId.$.extension;
+        patientDetails.id = patientId._attributes.extension;
       }
     } else {
-      patientDetails.id = id.$.extension;
+      patientDetails.id = id._attributes.extension;
     }
   }
 
-  if (addr.$ && addr.$.use && addr.$.use === 'HP') {
+  if (addr._attributes && addr._attributes.use && addr._attributes.use === 'HP') {
     const { streetAddressLine, city, state, postalCode, country } = addr;
 
-    patientDetails.address = `${streetAddressLine}, ${city}, ${state}, ${postalCode}, ${country}`;
+    patientDetails.address = `${streetAddressLine._text}, ${city._text}, ${state._text}, ${postalCode._text}, ${country._text}`;
   }
 
   if (patient) {
@@ -46,41 +46,26 @@ export default function getPatientDetails(recordTarget) {
       languageCommunication,
     } = patient;
 
-    if (name.$ && name.$.use && name.$.use === 'L') {
-      switch (typeof name.family) {
-        case 'object': {
-          patientDetails.lastName = '';
-
-          if (name.family.$ && name.family.$.qualifier && name.family.$.qualifier === 'SP') {
-            patientDetails.lastName = name.family._;
-          }
-
-          break;
-        }
-        default: {
-          patientDetails.lastName = name.family;
-
-          break;
-        }
-      }
+    if (name._attributes && name._attributes.use && name._attributes.use === 'L') {
+      patientDetails.lastName = name.family._text;
 
       if (Array.isArray(name.given)) {
-        patientDetails.firstName = name.given.find(given => !given.qualifier);
+        patientDetails.firstName = name.given.find(patName => !patName.qualifier)._text;
       } else {
-        patientDetails.firstName = name.given;
+        patientDetails.firstName = name.given._text;
       }
     }
 
-    if (administrativeGenderCode.$ && administrativeGenderCode.$.code) {
-      patientDetails.genderIdentity = administrativeGenderCode.$.code;
+    if (administrativeGenderCode._attributes && administrativeGenderCode._attributes.code) {
+      patientDetails.genderIdentity = administrativeGenderCode._attributes.code;
     }
 
-    if (telecom.$ && telecom.$.use && telecom.$.use === 'HP') {
-      patientDetails.phone = telecom.$.value;
+    if (telecom._attributes && telecom._attributes.use && telecom._attributes.use === 'HP') {
+      patientDetails.phone = telecom._attributes.value;
     }
 
-    if (birthTime && birthTime.$ && birthTime.$.value) {
-      const birthDate = birthTime.$.value.split(``);
+    if (birthTime && birthTime._attributes && birthTime._attributes.value) {
+      const birthDate = birthTime._attributes.value.split(``);
 
       let year = birthDate.slice(0, 4).join('');
       let month;
@@ -97,28 +82,28 @@ export default function getPatientDetails(recordTarget) {
     if (languageCommunication) {
       const { languageCode } = languageCommunication;
 
-      if (languageCode.$ && languageCode.$.code) {
-        patientDetails.language = languageCode.$.code;
+      if (languageCode._attributes && languageCode._attributes.code) {
+        patientDetails.language = languageCode._attributes.code;
       }
     }
 
-    if (raceCode && raceCode.$) {
-      patientDetails.race = raceCode.$.displayName.toLowerCase();
+    if (raceCode && raceCode._attributes) {
+      patientDetails.race = raceCode._attributes.displayName.toLowerCase();
     }
 
-    if (maritalStatusCode && maritalStatusCode.$) {
-      patientDetails.maritalStatus = maritalStatusCode.$.displayName.toLowerCase();
+    if (maritalStatusCode && maritalStatusCode._attributes) {
+      patientDetails.maritalStatus = maritalStatusCode._attributes.displayName.toLowerCase();
     }
 
     if (providerOrganization) {
-      patientDetails.providerInfo.name = providerOrganization.name;
+      patientDetails.providerInfo.name = providerOrganization.name._text;
 
       if (
-        providerOrganization.telecom.$ &&
-        providerOrganization.telecom.$.use &&
-        providerOrganization.telecom.$.use === 'WP'
+        providerOrganization.telecom._attributes &&
+        providerOrganization.telecom._attributes.use &&
+        providerOrganization.telecom._attributes.use === 'WP'
       ) {
-        patientDetails.providerInfo.phone = providerOrganization.telecom.$.value;
+        patientDetails.providerInfo.phone = providerOrganization.telecom._attributes.value;
       }
     }
   }

@@ -1,40 +1,68 @@
-import { render } from 'mustache';
-import generateEntry from './generateEntry';
+import { entryType } from './entries';
+import { textType } from './texts';
 
-const generateSection = async component => {
+export default function generateSection(section) {
   const html = [];
 
+  const { title, text, entry } = section;
+
   html.push(`
-      <div class="sectionBody">
+    <div class="sectionDetails">
   `);
 
-  for (let i = 0; i < component.length; i += 1) {
-    const { section } = component[i];
-
-    let entryDetails = await generateEntry(section); // eslint-disable-line no-await-in-loop
-
-    html.push(
-      render(
-        `
-          <div class="sectionDetails">
-            <h2 style="margin:1em 0">{{title}}</h2>
-        `,
-        section,
-      ),
-    );
-
-    html.push(entryDetails);
-
+  if (title) {
     html.push(`
-        </div>
+      <h2 style="margin:1em 0">${title._text}</h2>
     `);
   }
 
+  if (text) {
+    if (Array.isArray(text)) {
+      html.push(`
+        <div class="textDetails">
+      `);
+
+      for (let i = 0; i < text.length; i += 1) {
+        html.push(textType(text[i]));
+      }
+
+      html.push(`
+        </div>
+      `);
+    } else {
+      html.push(`
+        <div class="textDetails">
+          ${textType(text)}
+        </div>
+      `);
+    }
+  }
+
+  if (entry) {
+    if (Array.isArray(entry)) {
+      html.push(`
+        <div class="entryDetails">
+      `);
+
+      for (let i = 0; i < entry.length; i += 1) {
+        html.push(entryType(entry[i]));
+      }
+
+      html.push(`
+        </div>
+      `);
+    } else {
+      html.push(`
+        <div class="entryDetails">
+          ${entryType(entry)}
+        </div>
+      `);
+    }
+  }
+
   html.push(`
-      </div>
+    </div>
   `);
 
   return html.join('');
-};
-
-export default generateSection;
+}

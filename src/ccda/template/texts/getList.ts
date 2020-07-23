@@ -1,23 +1,11 @@
-import { entryType } from '../entries';
+import { textType } from '../texts';
 
 function renderItem(item) {
   const html = [];
 
-  if (typeof item !== 'string') {
-    html.push(`
-        <li>
-    `);
-
-    html.push(entryType(item));
-
-    html.push(`
-        </li>
-    `);
-  } else {
-    html.push(`
-        <li>${item}</li>
-    `);
-  }
+  html.push(`
+      <li>${textType(item)}</li>
+  `);
 
   return html.join('');
 }
@@ -71,7 +59,7 @@ export default function getList(list) {
 
   const { item } = list;
 
-  if (list.$ && list.$.listType === 'ordered') {
+  if (list._attributes && list._attributes.listType === 'ordered') {
     html.push(orderedList(item));
   } else {
     html.push(unorderedList(item));

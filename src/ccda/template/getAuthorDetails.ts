@@ -7,7 +7,7 @@ function renderAuthorName(name) {
     render(
       `
         <div>
-          <strong>Author By:</strong><div class="ml">{{given}} {{family}}</div>
+          <strong>Author By:</strong><div class="ml">{{given._text}} {{family._text}}</div>
         </div>
       `,
       name,

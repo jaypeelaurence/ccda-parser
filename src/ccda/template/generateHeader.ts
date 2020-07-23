@@ -16,8 +16,8 @@ export default function generateHeaders(header) {
   const patientDetails = getPatientDetails(patientRole);
 
   html.push(`
-      <div class="documentheader">
-        <h2 style="margin:1em 0">${title}</h2>
+      <div class="headerDetails">
+        <h2 style="margin:1em 0">${title._text}</h2>
         <div class="patientDetails">
   `);
 

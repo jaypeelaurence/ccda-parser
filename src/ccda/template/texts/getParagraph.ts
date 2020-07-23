@@ -1,13 +1,9 @@
-import { entryType } from '../entries';
+import { textType } from '../texts';
 
 function renderParagraph(paragraph) {
   const html = [];
 
-  if (typeof paragraph !== 'string') {
-    html.push(entryType(paragraph));
-  } else {
-    html.push(`${paragraph}`);
-  }
+  html.push(textType(paragraph));
 
   return html.join('');
 }

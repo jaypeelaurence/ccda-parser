@@ -1,26 +1,19 @@
-import { entryType } from '../entries';
+import { textType } from '../texts';
 
 function renderSpan(content) {
   const html = [];
 
-  if (typeof content !== 'string') {
-    html.push(`
-        <span>
-    `);
+  html.push(`
+      <span>
+  `);
 
-    if (content) {
-      html.push(entryType(content));
-    }
-
-    html.push(`
-        </span>
-    `);
-  } else {
-
-    html.push(`
-      <span>${content}</span>
-    `);
+  if (content) {
+    html.push(textType(content));
   }
+
+  html.push(`
+      </span>
+  `);
 
   return html.join('');
 }

@@ -1,23 +1,30 @@
 import { Parser } from 'xml2js';
+import convert from 'xml-js';
 import { ImportConfig } from './config';
-import { generateHeader, generateSection } from './template';
+import { generateHeader, generateComponent } from './template';
 
 const Import = async xmlFile => {
-  const file = await Parser({ ...ImportConfig }).parseStringPromise(xmlFile);
+  const file = JSON.parse(convert.xml2json(xmlFile, ImportConfig));
 
   const outputHtml = [];
 
   const {
-    title,
-    recordTarget,
-    author,
-    component: {
-      structuredBody: { component },
-    },
+    ClinicalDocument: {
+      title,
+      recordTarget,
+      author,
+      component,
+    }
   } = file;
 
   const header = await generateHeader({ title, recordTarget, author });
-  const section = await generateSection(component);
+  let body;
+
+  const { structuredBody, nonXMLBody } = component;
+
+  if (structuredBody) {
+    body = await generateComponent(structuredBody.component);
+  }
 
   outputHtml.push(`
     <div>
@@ -25,7 +32,7 @@ const Import = async xmlFile => {
 
   outputHtml.push(header);
 
-  outputHtml.push(section);
+  outputHtml.push(body);
 
   outputHtml.push(`
     </div>

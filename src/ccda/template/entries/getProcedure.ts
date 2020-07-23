@@ -3,7 +3,10 @@ import { entryType } from '../entries';
 export default function getProcedure(procedure) {
   const html = [];
 
-  // html.push(entryType(procedure));
+  html.push(`
+    <div class="procedureDetails">
+    </div>
+  `);
 
   return html.join('');
 }

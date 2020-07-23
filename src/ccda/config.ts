@@ -1,6 +1,20 @@
+function processText(value, parentElement) {
+  let newValue = value.replace(/\n/g,'<br />');
+  newValue = newValue.replace(/\t/g,'');
+  newValue = newValue.replace('|','');
+
+  return newValue;
+}
+
 const ImportConfig = {
-  explicitArray: false,
-  explicitRoot: false,
+  compact: true,
+  spaces: 4,
+  ignoreDeclaration: true,
+  ignoreInstruction: true,
+  ignoreComment: true,
+  trim: true,
+  textFn: processText,
+  alwaysChildren: true
 };
 
 const ExportConfig = {};
