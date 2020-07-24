@@ -1,4 +1,6 @@
-export default function getPatientDetails(recordTarget) {
+import formatDate from '../../methods/formatDate';
+
+export default function getRecordTarget(recordTarget) {
   const patientDetails = {
     id: '',
     address: '',
@@ -65,18 +67,7 @@ export default function getPatientDetails(recordTarget) {
     }
 
     if (birthTime && birthTime._attributes && birthTime._attributes.value) {
-      const birthDate = birthTime._attributes.value.split(``);
-
-      let year = birthDate.slice(0, 4).join('');
-      let month;
-      let day;
-
-      if (birthDate.length > 4) {
-        month = birthDate.slice(4, 6).join('');
-        day = birthDate.slice(6, 8).join('');
-      }
-
-      patientDetails.birthDate = `${month}-${day}-${year}`;
+      patientDetails.birthDate = `${formatDate(birthTime._attributes.value).split(' ')[0]}`;
     }
 
     if (languageCommunication) {

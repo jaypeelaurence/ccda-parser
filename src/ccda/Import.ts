@@ -1,4 +1,3 @@
-import { Parser } from 'xml2js';
 import convert from 'xml-js';
 import { ImportConfig } from './config';
 import { generateHeader, generateComponent } from './template';
@@ -9,18 +8,13 @@ const Import = async xmlFile => {
   const outputHtml = [];
 
   const {
-    ClinicalDocument: {
-      title,
-      recordTarget,
-      author,
-      component,
-    }
+    ClinicalDocument: { title, recordTarget, author, component },
   } = file;
 
   const header = await generateHeader({ title, recordTarget, author });
   let body;
 
-  const { structuredBody, nonXMLBody } = component;
+  const { structuredBody } = component;
 
   if (structuredBody) {
     body = await generateComponent(structuredBody.component);

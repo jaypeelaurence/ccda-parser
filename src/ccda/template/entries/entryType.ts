@@ -10,14 +10,7 @@ import {
 export default function entryType(entry) {
   const html = [];
 
-  const {
-    act,
-    organizer,
-    observation,
-    substanceAdministration,
-    encounter,
-    procedure,
-  } = entry;
+  const { act, organizer, observation, substanceAdministration, encounter, procedure } = entry;
 
   if (organizer) {
     html.push(getOrganizer(organizer));

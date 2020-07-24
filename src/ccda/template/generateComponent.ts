@@ -12,12 +12,12 @@ const generateComponent = async component => {
   if (Array.isArray(component)) {
     for (let i = 0; i < component.length; i += 1) {
       section = await generateSection(component[i].section); // eslint-disable-line no-await-in-loop
-    
+
       html.push(section);
     }
   } else {
     section = await generateSection(component.section);
-    
+
     html.push(section);
   }
 

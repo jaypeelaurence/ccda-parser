@@ -1,10 +1,4 @@
-function processText(value, parentElement) {
-  let newValue = value.replace(/\n/g,'<br />');
-  newValue = newValue.replace(/\t/g,'');
-  newValue = newValue.replace('|','');
-
-  return newValue;
-}
+import processText from './methods/processText';
 
 const ImportConfig = {
   compact: true,
@@ -14,7 +8,7 @@ const ImportConfig = {
   ignoreComment: true,
   trim: true,
   textFn: processText,
-  alwaysChildren: true
+  alwaysChildren: true,
 };
 
 const ExportConfig = {};

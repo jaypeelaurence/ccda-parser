@@ -11,10 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "envalid": "^6.0.2",
+    "moment": "^2.27.0",
     "mustache": "^4.0.1",
     "reflect-metadata": "^0.1.13",
-    "xml-js": "^1.6.11",
-    "xml2js": "^0.4.23"
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.13.0",

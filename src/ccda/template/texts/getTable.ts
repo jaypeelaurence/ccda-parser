@@ -3,7 +3,7 @@ import { textType } from '../texts';
 function renderCell(cell) {
   const html = [];
 
-  html.push(textType(cell))
+  html.push(textType(cell));
 
   return html.join('');
 }
@@ -68,7 +68,8 @@ function renderTr(tr) {
       </tr> 
     `);
   } else {
-    if(tr) {
+    // eslint-disable-next-line no-lonely-if
+    if (tr) {
       const { td, th, _text } = tr;
 
       if (_text) {

@@ -1,7 +1,6 @@
 import { render } from 'mustache';
 
-import getPatientDetails from './getPatientDetails';
-import getAuthorDetails from './getAuthorDetails';
+import { getRecordTarget, getAuthor } from './attributes';
 
 export default function generateHeaders(header) {
   const html = [];
@@ -12,8 +11,8 @@ export default function generateHeaders(header) {
     author,
   } = header;
 
-  const authorDetails = getAuthorDetails(author);
-  const patientDetails = getPatientDetails(patientRole);
+  const authorDetails = getAuthor(author);
+  const patientDetails = getRecordTarget(patientRole);
 
   html.push(`
       <div class="headerDetails">
