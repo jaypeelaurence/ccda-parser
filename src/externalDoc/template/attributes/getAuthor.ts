@@ -1,18 +1,14 @@
 import { render } from 'mustache';
 import { formatDate } from '../../methods/formatDate';
-import { styleInheritance } from '../../template';
-
-let parent = '';
-let children = '';
 
 function renderDate(time) {
   const html = [];
 
   const attrTime = formatDate(time);
 
-  html.push(`<div class="${children}"><div class="label nonLabel">Authored On:</div>`);
-  html.push(`<div class="value">${attrTime}</div>`);
-  html.push('</div>');
+  html.push('<div class="custField"><div class="label">Authored on:</div><div class="value">');
+  html.push(attrTime);
+  html.push('</div></div>');
 
   return html.join('');
 }
@@ -20,30 +16,53 @@ function renderDate(time) {
 function renderAuthorOrg(org) {
   const html = [];
 
-  // html.push(`
-  //       <div class="${parent}">
-  //         <div class="label">
-  //           Author:
-  //         </div>
-  // `);
+  const { elts, time } = org;
 
-  // html.push(
-  //   render(
-  //     `
-  //         <div class="${children}">
-  //           <div class="${[children, 'value'].join(' ')}">
-  //             {{manufacturerModelName._text}} - {{name._text}} 
-  //           </div>
-  //     `,
-  //     org,
-  //   ),
-  // );
+  if (elts) {
+    let name = elts.find(e => e.name === 'name');
+    name = name.elts.find(e => e.type === 'text');
+    const addr = elts.find(e => e.name === 'addr');
+    const telecom = elts.find(e => e.name === 'telecom');
 
-  // html.push(`
-  //           ${renderDate(org.time)}
-  //         </div>
-  //       </div>
-  // `);
+    if (name) {
+      html.push('<div class="custField"><div class="label">Author:</div><div class="value">');
+      html.push(render(`{{text}}`, name));
+      html.push('</div></div>');
+    }
+
+    if (addr) {
+      let streetAddressLine = addr.elts.find(e => e.name === 'streetAddressLine');
+      streetAddressLine = streetAddressLine.elts.find(e => e.type === 'text');
+
+      let city = addr.elts.find(e => e.name === 'city');
+      city = city.elts.find(e => e.type === 'text');
+
+      let postalCode = addr.elts.find(e => e.name === 'postalCode');
+      postalCode = postalCode.elts.find(e => e.type === 'text');
+
+      let country = addr.elts.find(e => e.name === 'country');
+      country = country.elts.find(e => e.type === 'text');
+
+      let state = addr.elts.find(e => e.name === 'state');
+      state = state.elts.find(e => e.type === 'text');
+
+      html.push('<div class="custField"><div class="label">Address:</div><div class="value">');
+      html.push(
+        `${streetAddressLine.text}, ${city.text}, ${state.text}, ${postalCode.text}, ${country.text}`,
+      );
+      html.push('</div></div>');
+    }
+
+    if (telecom && telecom.atts) {
+      html.push('<div class="custField"><div class="label">Telecom:</div><div class="value">');
+      html.push(render(`{{value}}`, telecom.atts));
+      html.push('</div></div>');
+    }
+  }
+
+  if (time && time.atts && time.atts.value) {
+    html.push(`${renderDate(time.atts.value)}`);
+  }
 
   return html.join('');
 }
@@ -53,27 +72,29 @@ function renderAuthorName(name) {
 
   const { elts, time } = name;
 
-  html.push(`<div class="${parent}"><div class="label">Author:</div>`);
-
-  html.push(`<div class="${children}">`);
+  html.push('<div class="custField"><div class="label">Author:</div><div class="value">');
 
   if (elts) {
-    let given = elts.find(elt => elt.name === 'given');
-    given = given.elts.find(elt => elt.type === 'text');
-    let family = elts.find(elt => elt.name === 'family');
-    family = family.elts.find(elt => elt.type === 'text');
+    let given = elts.find(e => e.name === 'given');
+    given = given.elts.find(e => e.type === 'text');
+    let family = elts.find(e => e.name === 'family');
+    family = family.elts.find(e => e.type === 'text');
 
-    html.push('<div class="value">');
-    html.push(`${render(`{{text}}`, given)} ${render(`{{text}}`, family)}`);
-    html.push('</div>');
+    html.push('');
+
+    if (given) {
+      html.push(render(`{{text}}`, given));
+    }
+
+    if (family) {
+      html.push(render(` {{text}}`, family));
+    }
   }
+  html.push('</div></div>');
 
   if (time && time.atts && time.atts.value) {
     html.push(`${renderDate(time.atts.value)}`);
   }
-
-  html.push('</div>');
-  html.push('</div>');
 
   return html.join('');
 }
@@ -82,48 +103,41 @@ function getAuthorType(author) {
   const html = [];
 
   if (author) {
-    const assignedAuthor = author.find(elt => elt.name === 'assignedAuthor');
-    const time = author.find(elt => elt.name === 'time');
+    const assignedAuthor = author.elts.find(e => e.name === 'assignedAuthor');
+    const time = author.elts.find(e => e.name === 'time');
 
-    const assignedPerson = assignedAuthor.elts.find(elt => elt.name === 'assignedPerson');
-    const assignedAuthoringDevice = assignedAuthor.elts.find(elt => elt.name === 'assignedAuthoringDevice');
-    const representedOrganization = assignedAuthor.elts.find(elt => elt.name === 'representedOrganization');
+    const assignedPerson = assignedAuthor.elts.find(e => e.name === 'assignedPerson');
+    const assignedAuthoringDevice = assignedAuthor.elts.find(
+      e => e.name === 'assignedAuthoringDevice',
+    );
+    const representedOrganization = assignedAuthor.elts.find(
+      e => e.name === 'representedOrganization',
+    );
 
     if (assignedPerson) {
-      const name = assignedPerson.elts.find(elt => elt.name === 'name');
+      const name = assignedPerson.elts.find(e => e.name === 'name');
 
       html.push(renderAuthorName({ ...name, time }));
     }
 
     if (assignedAuthoringDevice && representedOrganization) {
-      console.log("GET AUTHOR")
-      // html.push(
-      //   renderAuthorOrg({
-      //     ...assignedAuthoringDevice,
-      //     ...representedOrganization,
-      //     time,
-      //   }),
-      // );
+      html.push(
+        renderAuthorOrg({
+          ...assignedAuthoringDevice,
+          ...representedOrganization,
+          time,
+        }),
+      );
     }
   }
 
   return html.join('');
 }
 
-export default function getAuthor(author, style?: styleInheritance) {
-  if (style) {
-    if (style.parent) {
-      parent = style.parent;
-    }
-
-    if (style.children) {
-      children = style.children;
-    }
-  }
-
+export default function getAuthor(author) {
   const html = [];
 
-  html.push(`<div class="${['authorDetails', parent].join(' ')}">`);
+  html.push(`<div class="authorDetails">`);
   html.push(getAuthorType(author));
   html.push('</div>');
 

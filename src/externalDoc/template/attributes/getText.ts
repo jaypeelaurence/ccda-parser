@@ -1,47 +1,20 @@
 import { render } from 'mustache';
-import { styleInheritance } from '../../template';
 
-let parent = '';
-let children = '';
-
-export default function getText(text, style?: styleInheritance) {
+export default function getText(text) {
   const html = [];
 
-  if (style) {
-    if (style.parent) {
-      parent = style.parent;
-    }
+  const { elts } = text;
 
-    if (style.children) {
-      children = style.children;
-    }
+  const reference = elts.find(e => e.name === 'reference');
+
+  html.push('<div class="refrerenceDetails">');
+  html.push('<div class="custField"><div class="label">Reference:</div><div class="value">');
+
+  if (reference && reference.atts) {
+    html.push(render(`{{value}} `, reference.atts));
   }
 
-  html.push(`
-    <div class="${['refrerenceDetail', parent].join('')}">
-      <div class="${['label', children].join(' ')}">
-        Reference:
-      </div>
-  `);
-
-  const { reference, _text } = text;
-
-  html.push(`
-      <div class="value">
-  `);
-
-  if (reference && reference._attributes) {
-    html.push(render(`{{value}} `, reference._attributes));
-  }
-
-  if (_text) {
-    html.push(_text);
-  }
-
-  html.push(`
-      </div>
-    </div>
-  `);
+  html.push('</div></div></div>');
 
   return html.join('');
 }

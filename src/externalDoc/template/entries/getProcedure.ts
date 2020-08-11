@@ -6,18 +6,25 @@ let elements = 1;
 export default function getProcedure(procedure, style?: styleInheritance) {
   const html = [];
 
+  const { elts } = procedure;
+
   if (style) {
     if (style.elements) {
       elements = style.elements;
     }
   }
 
-  html.push(`
-    <div class="${['procedureDetails', `dcol-${elements}`].join(' ')}">
-      <h2>Procedure</h2>
-      ${attributeType(procedure)}
-    </div>
-  `);
+  html.push(
+    `<details class="${['procedureDetails', `dcol-${elements}`].join(' ')}" ${
+      !style.parent ? 'open' : ''
+    }><summary>Procedure</summary><div class="content">`,
+  );
+
+  if (elts) {
+    html.push(attributeType(elts));
+  }
+
+  html.push(`</div></details>`);
 
   return html.join('');
 }

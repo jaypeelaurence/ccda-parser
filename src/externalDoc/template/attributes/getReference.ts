@@ -1,7 +1,5 @@
-import { styleInheritance } from '../../template';
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function getReference(reference, style?: styleInheritance) {
+export default function getReference(reference) {
   const html = [];
 
   return html.join('');

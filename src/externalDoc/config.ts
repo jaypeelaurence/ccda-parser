@@ -5,6 +5,7 @@ const ImportConfig = {
   ignoreDeclaration: true,
   ignoreInstruction: true,
   ignoreComment: true,
+  alwaysChildren: true,
   textFn: processText,
   elementsKey: 'elts',
   attributesKey: 'atts',

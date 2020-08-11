@@ -1,30 +1,15 @@
 import { formatDate } from '../../methods/formatDate';
-import { styleInheritance } from '../../template';
 
-let parent = '';
-let children = '';
-
-export default function getEffectiveTime(effectiveTime, style?: styleInheritance) {
-  if (style) {
-    if (style.parent) {
-      parent = style.parent;
-    }
-
-    if (style.children) {
-      children = style.children;
-    }
-  }
-
+export default function getEffectiveTime(effectiveTime) {
   const html = [];
 
   const { elts } = effectiveTime;
 
-  let low = elts.find(elt => elt.name === 'low');
-  let high = elts.find(elt => elt.name === 'high');
+  let low = elts.find(e => e.name === 'low');
+  let high = elts.find(e => e.name === 'high');
 
-  html.push(`<div class="${['effectiveTimeDetails', parent].join(' ')}">`);
-  html.push(`<div class="${['label', children].join(' ')}">Date / Time:</div>`);
-  html.push('<div class="value">');
+  html.push('<div class="effectiveTimeDetails">');
+  html.push('<div class="custField"><div class="label">Date / Time:</div><div class="value">');
 
   if (low && low.atts && low.atts.value) {
     html.push(formatDate(low.atts.value));
@@ -38,8 +23,7 @@ export default function getEffectiveTime(effectiveTime, style?: styleInheritance
     html.push(formatDate(high.atts.value));
   }
 
-  html.push('</div>');
-  html.push('</div>');
+  html.push('</div></div></div>');
 
   return html.join('');
 }

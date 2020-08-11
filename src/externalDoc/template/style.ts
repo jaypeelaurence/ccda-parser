@@ -3,258 +3,286 @@ import sass from 'node-sass';
 const config = { outputStyle: 'compressed' };
 
 const scssStyle = `
-  $lightGrey: #ededed;
-  $grey: #c2c2c2;
-  $lightDarkGrey: #dbd9d9;
-  $lightVeryDarkGrey: #b3b1b1;
-  $darkGrey: #3d3d3d;
-  $darkBlue: #29385e;
-  $blue: #6d7382;
+  $border: #eeeeee;
+  $grey: #1f1e1e;
+  $lightGrey: #d1d1d1;
+  $blue: #1439a8;
+  $darkBlue: #344a80;
+  $lightBlue: #d5dde8;
+  $white: #ffffff;
+
+  details {
+    summary {
+      outline: 0px;
+    }
+  }
 
   .externalDoc {
-    width: 100%;
-    font-family: sans-serif;
-    color: $darkGrey;
-    font-size: 12px;
+    padding-bottom: 20px;
+    font-size: 14px;
+    color: $grey;
 
-    span {
-      font-style: italic;
-    }
-
-    ul, ol {
-      margin: 0px;
-      padding: 0px 20px;
-    }
-
-    table {
+    .custField {
       width: 100%;
-      min-width: 900px;
-      border-collapse: separate;
-      border-spacing: 3.5px;
-      margin-bottom: 10px; 
+      display: flex;
+      margin-bottom: 5px;
 
-      tr {
-        th, td {
-          padding: 5px;
-          vertical-align: top;
-          text-align: left;
-          background-color: $lightGrey;
-          font-size: 12px;
-        }
+      .label {
+        word-wrap: break-word;
+        min-width: 85px;
+        width: 90px;
+        margin-right: 10px;
+        font-weight: 700;
+      }
 
-        th {
-          vertical-align: middle;
-          text-align: center;
-          background-color: $grey;
-        }
+      .value {
+        word-wrap: break-word;
+        width: 100%;
       }
     }
 
-    p {
-      margin-top: 0px;
+    .title {
+      font-weight: 700;
     }
 
     .custEmpty {
-      font-size: 16px;
-      font-weight: 700;
+      display: block;
+      margin: 20px 0px;
       text-align: center;
-      color: $lightDarkGrey;
-    }
-
-    .tableWrapper {
-      overflow-x: auto;
-    }
-
-    .inline {
-      display: flex;
-
-      div.label {
-        margin-right: 5px;
-      }
-    }
-
-    .inlineBlock {
-      display: inline-block;
-
-      & > div {
-        display: inline-block;
-      }
-    }
-
-    .inlineWrap {
-      flex-wrap: wrap;
-    }
-
-    .nonInline {
-      display: flex;
-
-      div {
-        margin-right: 5px;
-      }
-    }
-
-    .label {
       font-weight: 700;
-      padding: 5px;
-      color: $darkBlue;
+      font-size: 20px;
+      color: $lightGrey;
     }
 
-    .nonLabel {
-      .label {
-        width: auto;
-      }
-    }
+    .docWrapper {
+      display: flex;
+      flex-wrap: wrap;
 
-    .value {
-      padding: 5px;
-    }
-
-    .spacer {
-      margin: 2.5px;
-    }
-
-    .content {
-      padding: 2.5px;
-    }
-
-    .headerDetails {
-      .title {
-        text-align: center;
-        color: $darkBlue;
-      }
-
-      .label {
-        width: 150px;
-        background-color: $grey;
-      }
-
-      .nonLabel {
-        background-color: transparent;
-        width: auto;
-      }
-
-      .value {
-        background-color: transparent;
-        width: auto;
-      }
-    }
-
-    .sectionDetails {
-      padding: 5px !important;
-      margin-top: 10px;
-
-      .title {
-        margin: 10px 0px 15px 0px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid $darkBlue;
-        color: $darkBlue;
-      }
-    }
-
-    .entryDetails {
-      padding: 5px;
-      font-size: 12px;
-
-      h2 {
-        font-size: 14px;
-        margin: 0px;
-      }
-
-      .label {
-        padding-top: 0px;
-        padding-bottom: 0px;
-        margin-right: 2px !important;
-        width: 90px;
-      }
-
-      .nonLabel {
-        background-color: transparent;
-        width: auto;
-      }
-
-      .value {
-        padding-top: 0px;
-        padding-bottom: 0px;
-      }
-
-      & > div {
-        margin: 2.5px;
-        padding: 5px;
-        border: 1px solid $grey;
-      }
-
-      .componentDetails, .entryRelationShipDetails {
-        background-color: $lightGrey;
-        padding: 5px;
-        margin-top: 5px;
+      .headerDetails, .componentBody {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        min-height: 100px;
 
         & > div {
-          margin: 5px;
+          border: 1px solid $border;
+          background-color: $white;
+          margin: 0px 10px;
+        }
+      }
 
-          .componentDetails, .entryRelationShipDetails {
-            margin-left: 5px;
-            background-color: $lightDarkGrey;
+      .headerDetails > div:nth-child(1) {
+        padding: 20px;
+      }
 
-            & > div {
-              margin: 5px;
+      .headerDetails {
+        margin-bottom: 20px;
 
-              .componentDetails, .entryRelationShipDetails {
-                margin-left: 5px;
-                background-color: $lightVeryDarkGrey;
-              }
-            }
+        .title {
+          font-weight: 500;
+          margin: 0px;
+          margin-bottom: 20px;
+          color: $grey;
+          text-align: center;
+        }
+
+        .spacer {
+          margin: 10px 0px;
+        }
+
+        .patientDetails {
+          color: $darkBlue;
+          font-size: 13px;
+
+          .name {
+            text-align: center;
+            color: $blue;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 20px;
+          }
+
+          .label {
+            font-weight: 900;
+          }
+
+          .value {
+            color: $grey;
+          }
+        }
+
+        .providerDetails, .authorDetails {
+          font-size: 12px;
+          color: rgba(0,0,0,0.6);
+
+          .title {
+            text-align: left;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            color: rgba(0,0,0,0.6);
+          }
+
+          .label {
+            color: rgba(0,0,0,0.6);
           }
         }
       }
-    }
 
-    @media (min-width: 576px) {
-      [class*="dcol-"] {
+      .componentBody {
         width: 100%;
+        max-width: 100%;
+
+        .sectionDetails {
+          .title {
+            background-color: $blue;
+            border-bottom: 5px solid $white;
+            color: $white;
+            padding: 10px 20px;
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+
+          .content {
+            padding: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            p {
+              display: inline-block;
+              margin: 0px;
+              margin-bottom: 10px;
+            }
+
+            .entryDetails {
+              font-size: 12px;
+
+              details {
+                padding-bottom: 10px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+
+                .custField {
+                  .value {
+                    color: rgba(0, 0, 0, 0.6);
+                  }
+                }
+
+                summary {
+                  color: $blue;
+                  font-size: 14px;
+                  font-weight: 700;
+                }
+
+                details {
+                  padding: 10px;
+                  background-color: #f2f2f2;
+                  color: $grey;
+
+                  summary {
+                    font-size: 12px;
+                    font-weight: 700;
+                  }
+
+                  details {
+                    padding: 10px;
+                    background-color: #e3e1e1;
+                  
+                    details {
+                      padding: 10px;
+                      background-color: #cfcccc;
+                    }
+                  }
+                }
+              }
+            }
+
+            .unordered, .ordered {
+              p {
+                margin-bottom: 0px;
+                color: $grey;
+              }
+            }
+
+            .tableWrapper {
+              overflow-x: auto;
+              margin-top: 10px;
+              margin-bottom: 10px;
+
+              table {
+                width: 100%;
+                min-width: 900px;
+                border-collapse: separate;
+                border-spacing: 2px;
+
+                tr {
+                  th, td {
+                    padding: 10px;
+                    vertical-align: top;
+                    text-align: left;
+                    font-size: 12px;
+                    background-color: #f2f2f2;
+                    color: $grey;
+                  }
+
+                  th {
+                    vertical-align: middle;
+                    text-align: center;
+                    background-color: #d5dde8;
+
+                    p {
+                      margin-bottom: 0px;
+                      font-weight: 700;
+                      color: $grey;
+                    }
+                  }
+
+                  td {
+                    p {
+                      display: block;
+                    }
+                  }
+                }
+              }
+
+              .tableWrapper {
+                table tr td {
+                  background-color: #e3e1e1;
+                }
+
+                table tr th {
+                  background-color: #c7ccd4;
+                }
+              }
+            }
+
+            .inlineBlock {
+              .custField > div {
+                display: inline-block;
+
+                &.label {
+                  min-width: auto;
+                  width: auto;
+                }
+              }
+            }
+          } 
+        }
       }
 
-      .dcol-1, .dcol-2 .dcol-3, .dcol-4 {
-        width: 100%;
-      }
-    }
+      @media (min-width: 740px) {
+        flex-wrap: nowrap;
 
-    @media (min-width: 768px) {
-      [class*="dcol-"] {
-        width: 23%;
-      }
+        .headerDetails {
+          width: 30%;
+          margin-bottom: 0px;
+        }
 
-      .dcol-4 {
-        width: 31.33%;
-      }
-
-      .dcol-3 {
-        width: 48%;
-      }
-
-      .dcol-1, .dcol-2 {
-        width: 100%;
-      }
-    }
-
-    @media (min-width: 992px) {
-      [class*="dcol-"] {
-        width: 19%;
-      }
-
-      .dcol-4 {
-        width: 23%;
-      }
-
-      .dcol-3 {
-        width: 31.33%;
-      }
-
-      .dcol-2 {
-        width: 48%;
-      }
-
-      .dcol-1 {
-        width: 100%;
+        .componentBody {
+          width: 70%;
+        }
       }
     }
   }
@@ -264,9 +292,8 @@ let style = sass.renderSync({ data: scssStyle, ...config });
 style = `<style>${style.css.toString()}</style>`;
 
 interface styleInheritance {
-  parent?: string;
-  children?: string;
   elements?: number;
+  parent?: boolean;
 }
 
 // eslint-disable-next-line no-undef

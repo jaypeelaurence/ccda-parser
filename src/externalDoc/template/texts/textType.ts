@@ -1,38 +1,32 @@
 import { getList, getParagraph, getTable, getContent, getCaption } from '../texts';
 
-export default function textType(type) {
+export default function textType(text) {
   const html = [];
 
-  const { _text, content, table, list, paragraph, caption } = type;
+  const { name, elts, type } = text;
 
-  if (_text) {
-    if (Array.isArray(_text)) {
-      for (let i = 0; i < _text.length; i += 1) {
-        html.push(`${_text[i]} <br/>`);
-      }
-    } else {
-      html.push(_text);
-    }
+  if (type === 'text') {
+    html.push(`<p>${text.text}</p>`);
   }
 
-  if (caption) {
-    html.push(getCaption(caption));
+  if (name === 'caption') {
+    html.push(getCaption(elts));
   }
 
-  if (content) {
-    html.push(getContent(content));
+  if (name === 'content') {
+    html.push(getContent(text));
   }
 
-  if (list) {
-    html.push(getList(list));
+  if (name === 'list') {
+    html.push(getList(text));
   }
 
-  if (table) {
-    html.push(getTable(table));
+  if (name === 'table') {
+    html.push(getTable(text));
   }
 
-  if (paragraph) {
-    html.push(getParagraph(paragraph));
+  if (name === 'paragraph') {
+    html.push(getParagraph(text));
   }
 
   return html.join('');

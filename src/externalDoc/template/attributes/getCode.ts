@@ -1,59 +1,28 @@
 import { render } from 'mustache';
-import { attributeType } from '../attributes';
-import { styleInheritance } from '../../template';
 
-let parent = '';
-let children = '';
-
-export default function getCode(code, style?: styleInheritance) {
+export default function getCode(code) {
   const html = [];
 
-  if (style) {
-    if (style.parent) {
-      parent = style.parent;
-    }
+  const { atts, elts } = code;
 
-    if (style.children) {
-      children = style.children;
-    }
+  html.push('<div class="codeDetails">');
+  html.push('<div class="custField"><div class="label">Code:</div><div class="value">');
+
+  if (atts) {
+    html.push(`${render(`{{codeSystemName}} - {{displayName}} `, atts)} `);
   }
 
-  html.push(`
-    <div class="${['codeDetails', parent].join(' ')}">
-      <div class="${['label', children].join(' ')}">
-        Code:
-      </div>
-  `);
+  if (elts) {
+    const translation = elts.filter(e => e.name === 'translation');
 
-  html.push(`
-      <div class="value">
-  `);
-
-  const { _attributes, translation } = code;
-
-  if (_attributes) {
-    html.push(`${render(`{{codeSystemName}} - {{displayName}} `, _attributes)} `);
-  }
-
-  if (translation) {
-    if (Array.isArray(translation)) {
-      for (let i = 0; i < translation.length; i += 1) {
-        html.push(`${render(`<i>{{_attributes.displayName}} </i>`, translation[i])} `);
+    translation.forEach(e => {
+      if (e.atts) {
+        html.push(`${render(`<i>{{displayName}} </i>`, e.atts)} `);
       }
-    } else {
-      html.push(`${render(`<i>{{_attributes.displayName}} </i>`, translation)} `);
-    }
+    });
   }
 
-  html.push(`<i>${attributeType(code)}</i> `);
-
-  html.push(`
-      </div>
-  `);
-
-  html.push(`
-    </div>
-  `);
+  html.push('</div></div></div>');
 
   return html.join('');
 }

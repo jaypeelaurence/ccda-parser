@@ -1,33 +1,21 @@
 import { textType } from '../texts';
 
 function renderItem(item) {
-  const html = [];
-
-  html.push(`
-      <li>${textType(item)}</li>
-  `);
-
-  return html.join('');
+  return `${textType(item)}`;
 }
 
 function orderedList(item) {
   const html = [];
 
-  html.push(`
-          <ol>
-  `);
+  const items = item.find(e => e.name === 'item');
 
-  if (Array.isArray(item)) {
-    for (let i = 0; i < item.length; i += 1) {
-      html.push(renderItem(item[i]));
-    }
-  } else {
-    html.push(renderItem(item));
+  html.push('<div class="ordered">');
+
+  for (let i = 0; i < items.elts.length; i += 1) {
+    html.push(renderItem(items.elts[i]));
   }
 
-  html.push(`
-          </ol>
-  `);
+  html.push('</div>');
 
   return html.join('');
 }
@@ -35,21 +23,15 @@ function orderedList(item) {
 function unorderedList(item) {
   const html = [];
 
-  html.push(`
-          <ul>
-  `);
+  const items = item.find(e => e.name === 'item');
 
-  if (Array.isArray(item)) {
-    for (let i = 0; i < item.length; i += 1) {
-      html.push(renderItem(item[i]));
-    }
-  } else {
-    html.push(renderItem(item));
+  html.push('<div class="unordered">');
+
+  for (let i = 0; i < items.elts.length; i += 1) {
+    html.push(renderItem(items.elts[i]));
   }
 
-  html.push(`
-          </ul>
-  `);
+  html.push('</div>');
 
   return html.join('');
 }
@@ -57,12 +39,14 @@ function unorderedList(item) {
 export default function getList(list) {
   const html = [];
 
-  const { item } = list;
+  const { atts, elts } = list;
 
-  if (list._attributes && list._attributes.listType === 'ordered') {
-    html.push(orderedList(item));
-  } else {
-    html.push(unorderedList(item));
+  if (elts) {
+    if (atts && atts.listType === 'ordered') {
+      html.push(orderedList(elts));
+    } else {
+      html.push(unorderedList(elts));
+    }
   }
 
   return html.join('');

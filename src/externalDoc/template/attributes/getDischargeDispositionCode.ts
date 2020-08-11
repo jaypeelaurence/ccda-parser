@@ -1,30 +1,13 @@
 import { render } from 'mustache';
-import { styleInheritance } from '../../template';
 
-let parent = '';
-let children = '';
-
-export default function getDischargeDispositionCode(
-  dischargeDispositionCode,
-  style?: styleInheritance,
-) {
+export default function getDischargeDispositionCode(dischargeDispositionCode) {
   const html = [];
-
-  if (style) {
-    if (style.parent) {
-      parent = style.parent;
-    }
-
-    if (style.children) {
-      children = style.children;
-    }
-  }
 
   const { _attributes } = dischargeDispositionCode;
 
   html.push(`
-    <div class="${['dischargeDispositionCodeDetails', parent].join(' ')}">
-        <div class="${['label', children].join(' ')}">
+    <div class="dischargeDispositionCodeDetails">
+        <div class="label">
           Discharge Disposition:
         </div>
   `);

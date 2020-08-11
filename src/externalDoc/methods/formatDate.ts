@@ -35,7 +35,7 @@ function formatDate(date) {
   const ampm = hours <= 12 ? 'am' : 'pm';
   const time = hours + ':' + String(minutes).padStart(2, '0') + ampm;
 
-  return `${monthNames[monthIndex]} ${day}, ${year} - ${time}`;
+  return `${monthNames[monthIndex]} ${day}, ${year}, ${time}`;
 }
 
 function formatJsDate(date) {

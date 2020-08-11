@@ -1,19 +1,19 @@
 import { attributeType } from '../attributes';
 
-export default function getParticipant(participant, style = null) {
+export default function getParticipant(participant) {
   const html = [];
 
-  const { participantRole } = participant;
+  html.push('<div class="participantDetails">');
 
-  html.push(`
-    <div class="participantDetails">
-  `);
+  const { elts } = participant;
 
-  html.push(attributeType(participantRole, style));
+  const participantRole = elts.find(e => e.name === 'participantRole');
 
-  html.push(`
-    </div>
-  `);
+  if (participantRole && participantRole.elts) {
+    html.push(attributeType(participantRole.elts));
+  }
+
+  html.push('</div>');
 
   return html.join('');
 }

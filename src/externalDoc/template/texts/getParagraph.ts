@@ -1,21 +1,19 @@
 import { textType } from '../texts';
 
 function renderParagraph(paragraph) {
-  const html = [];
-
-  html.push(textType(paragraph));
-
-  return html.join('');
+  return textType(paragraph);
 }
 
 export default function getParagraph(paragraph) {
   const html = [];
 
-  html.push(`<p>`);
+  const { elts } = paragraph;
 
-  html.push(renderParagraph(paragraph));
-
-  html.push(`</p>`);
+  if (elts) {
+    for (let i = 0; i < elts.length; i += 1) {
+      html.push(`<p>${renderParagraph(elts[i])}</p>`);
+    }
+  }
 
   return html.join('');
 }

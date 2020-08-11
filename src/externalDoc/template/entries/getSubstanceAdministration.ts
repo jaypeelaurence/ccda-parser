@@ -9,18 +9,25 @@ export default function getSubstanceAdministration(
 ) {
   const html = [];
 
+  const { elts } = substanceAdministration;
+
   if (style) {
     if (style.elements) {
       elements = style.elements;
     }
   }
 
-  html.push(`
-    <div class="${['substanceAdministrationDetails', `dcol-${elements}`].join(' ')}">
-      <h2>Substance Administration</h2>
-      ${attributeType(substanceAdministration, { parent: 'inline', children: 'nonLabel' })}
-    </div>
-  `);
+  html.push(
+    `<details class="${['substanceAdministrationDetails', `dcol-${elements}`].join(' ')}" ${
+      !style.parent ? 'open' : ''
+    }><summary>Substance Administration</summary><div class="content">`,
+  );
+
+  if (elts) {
+    html.push(attributeType(elts));
+  }
+
+  html.push(`</div></details>`);
 
   return html.join('');
 }

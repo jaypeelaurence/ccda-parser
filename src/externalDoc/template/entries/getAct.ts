@@ -6,18 +6,25 @@ let elements = 1;
 export default function getAct(act, style?: styleInheritance) {
   const html = [];
 
+  const { elts } = act;
+
   if (style) {
     if (style.elements) {
       elements = style.elements;
     }
   }
 
-  html.push(`
-    <div class="${['actDetails', `dcol-${elements}`].join(' ')}">
-      <h2>Act</h2>
-      ${attributeType(act, { parent: 'inline' })}
-    </div>
-  `);
+  html.push(
+    `<details class="${['actDetails', `dcol-${elements}`].join(' ')}" ${
+      !style.parent ? 'open' : ''
+    }><summary>Act</summary><div class="content">`,
+  );
+
+  if (elts) {
+    html.push(attributeType(elts));
+  }
+
+  html.push(`</div></details>`);
 
   return html.join('');
 }

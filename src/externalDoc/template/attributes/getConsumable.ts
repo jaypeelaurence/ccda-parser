@@ -1,45 +1,30 @@
 import { attributeType } from '../attributes';
-import { styleInheritance } from '../../template';
 
-let parent = '';
-let children = '';
-
-export default function getConsumable(consumable, style?: styleInheritance) {
+export default function getConsumable(consumable) {
   const html = [];
 
-  if (style) {
-    if (style.parent) {
-      parent = style.parent;
+  const { elts } = consumable;
+
+  const manufacturedProduct = elts.find(e => e.name === 'manufacturedProduct');
+
+  html.push('<div class="consumableDetails">');
+  html.push('<div class="custField"><div class="label">Consumable:</div><div class="value">');
+
+  if (manufacturedProduct) {
+    const manufacturedMaterial = manufacturedProduct.elts.find(
+      e => e.name === 'manufacturedMaterial',
+    );
+
+    html.push('<div class="inlineBlock">');
+
+    if (manufacturedMaterial) {
+      html.push(attributeType(manufacturedMaterial.elts));
     }
 
-    if (style.children) {
-      children = style.children;
-    }
+    html.push('</div>');
   }
 
-  const {
-    manufacturedProduct: { manufacturedMaterial },
-  } = consumable;
-
-  html.push(`
-    <div class="${['statusCodeDetails', parent].join(' ')}">
-      <div class="${['label', children].join(' ')}">
-        Consumable:
-      </div>
-  `);
-
-  html.push(`
-      <div class="value">
-  `);
-
-  if (manufacturedMaterial) {
-    html.push(attributeType(manufacturedMaterial, { ...style }));
-  }
-
-  html.push(`
-      </div>
-    </div>
-  `);
+  html.push('</div></div></div>');
 
   return html.join('');
 }

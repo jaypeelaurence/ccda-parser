@@ -11,30 +11,30 @@ import {
 export default function entryType(entry, style?: styleInheritance) {
   const html = [];
 
-  const { act, organizer, observation, substanceAdministration, encounter, procedure } = entry;
+  const { name } = entry;
 
-  if (organizer) {
-    html.push(getOrganizer(organizer, style));
+  if (name === 'organizer') {
+    html.push(getOrganizer(entry, style));
   }
 
-  if (encounter) {
-    html.push(getEncounter(encounter, style));
+  if (name === 'encounter') {
+    html.push(getEncounter(entry, style));
   }
 
-  if (observation) {
-    html.push(getObservation(observation, style));
+  if (name === 'observation') {
+    html.push(getObservation(entry, style));
   }
 
-  if (act) {
-    html.push(getAct(act, style));
+  if (name === 'act') {
+    html.push(getAct(entry, style));
   }
 
-  if (procedure) {
-    html.push(getProcedure(procedure, style));
+  if (name === 'procedure') {
+    html.push(getProcedure(entry, style));
   }
 
-  if (substanceAdministration) {
-    html.push(getSubstanceAdministration(substanceAdministration, style));
+  if (name === 'substanceAdministration') {
+    html.push(getSubstanceAdministration(entry, style));
   }
 
   return html.join('');

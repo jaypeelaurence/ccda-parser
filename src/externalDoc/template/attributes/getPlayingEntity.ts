@@ -1,66 +1,38 @@
 import { render } from 'mustache';
-import { attributeType } from '../attributes';
-import { styleInheritance } from '../../template';
 
-let parent = '';
-let children = '';
-
-export default function getPlayingEntity(playingEntity, style?: styleInheritance) {
+export default function getPlayingEntity(playingEntity) {
   const html = [];
 
-  if (style) {
-    if (style.parent) {
-      parent = style.parent;
-    }
+  html.push('<div class="playingEntityDetails"><div class="custField">');
 
-    if (style.children) {
-      children = style.children;
-    }
-  }
+  const { elts } = playingEntity;
 
-  html.push(`
-    <div class="${['playingEntityDetails', parent].join(' ')}">
-  `);
-
-  const { name, desc } = playingEntity;
+  let name = elts.find(e => e.name === 'name');
+  let desc = elts.find(e => e.name === 'desc');
 
   if (name) {
+    name = name.elts.find(e => e.type === 'text');
+
     html.push(
       render(
-        `
-          <div class="${['label', children].join(' ')}">
-            Name:
-          </div>
-          <div class="value">
-            {{_text}}
-          </div>
-        `,
+        `<div class="label">Name:</div><div class="value"><div class="value">{{text}}</div></div>`,
         name,
       ),
     );
   }
 
   if (desc) {
+    desc = desc.elts.find(e => e.type === 'text');
+
     html.push(
       render(
-        `
-          <div class="${['label', children].join(' ')}">
-            Description:
-          </div>
-          <div class="value">
-            {{_text}}
-          </div>
-        `,
+        `<div class="label">Description:</div><div class="value"><div class="value">{{text}}</div></div>`,
         desc,
       ),
     );
   }
 
-  html.push(attributeType(playingEntity));
-
-  html.push(`
-    </div>
-  `);
+  html.push('</div></div>');
 
   return html.join('');
 }

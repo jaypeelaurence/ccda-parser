@@ -1,19 +1,9 @@
 import { textType } from '../texts';
 
 function renderCaption(caption) {
-  const html = [];
-
-  html.push(`
-      <span>${textType(caption)}</span>
-  `);
-
-  return html.join('');
+  return `<span>${textType(caption)}</span>`;
 }
 
 export default function getCaption(caption) {
-  const html = [];
-
-  html.join(renderCaption(caption));
-
-  return html.join('');
+  return renderCaption(caption);
 }

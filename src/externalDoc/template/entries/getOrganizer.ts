@@ -6,18 +6,25 @@ let elements = 1;
 export default function getOrganizer(organizer, style?: styleInheritance) {
   const html = [];
 
+  const { elts } = organizer;
+
   if (style) {
     if (style.elements) {
       elements = style.elements;
     }
   }
 
-  html.push(`
-    <div class="${['organizerDetails', `dcol-${elements}`].join(' ')}">
-      <h2>Organizer</h2>
-      ${attributeType(organizer)}
-    </div>
-  `);
+  html.push(
+    `<details class="${['organizerDetails', `dcol-${elements}`].join(' ')}" ${
+      !style.parent ? 'open' : ''
+    }><summary>Organizer</summary><div class="content">`,
+  );
+
+  if (elts) {
+    html.push(attributeType(elts));
+  }
+
+  html.push(`</div></details>`);
 
   return html.join('');
 }

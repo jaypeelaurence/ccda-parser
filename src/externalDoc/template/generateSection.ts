@@ -1,49 +1,72 @@
-import { render } from 'mustache';
 import { entryType } from './entries';
 import { textType } from './texts';
+import { formatTitle } from '../methods/formatTitle';
 
 export default function generateSection(section) {
   const html = [];
   let state = false;
 
-  let title = section.find(elt => elt.name === 'title');
-  title = title.elts.find(elt => elt.type === 'text');
-  const text = section.find(elt => elt.name === 'text');
-  const entry = section.find(elt => elt.name === 'entry');
+  let title = section.find(e => e.name === 'title');
+  title = title.elts.find(e => e.type === 'text');
+  const text = section.filter(e => e.name === 'text');
+  const entry = section.filter(e => e.name === 'entry');
 
-  html.push('<div class="sectionDetails content">');
+  html.push('<details class="sectionDetails" open>');
 
   if (title) {
-    html.push(render('<h2 class="title">{{text}}</h2>', title));
+    html.push(`<summary class="title">${formatTitle(title.text)}</summary>`);
   }
 
-  if (text) {
-    const textElts = ['caption', 'content', 'list', 'paragraph', 'table'];
-    const texts = text.elts.find(elt => textElts.includes(elt.name));
+  html.push('<div class="content">');
 
-    if (texts) {
-      state = true;
+  const textElts = ['caption', 'content', 'list', 'paragraph', 'table'];
+  const entryElts = [
+    'act',
+    'encounter',
+    'observation',
+    'observation',
+    'procedure',
+    'substanceAdministration',
+  ];
 
-      html.push(textType(texts));
+  if (text.length) {
+    for (let i = 0; i < text.length; i += 1) {
+      const texts = text[i].elts.filter(e => textElts.includes(e.name));
+
+      if (texts.length) {
+        state = true;
+
+        texts.forEach(e => {
+          html.push(textType(e));
+        });
+      }
     }
   }
 
-  if (entry) {
-    const entryElts = ['act', 'encounter', 'observation', 'observation', 'procedure', 'substanceAdministration'];
-    const entries = entry.elts.find(elt => entryElts.includes(elt.name));
+  if (entry.length) {
+    html.push('<div class="entryDetails">');
 
-    if (entries) {
-      state = true;
+    for (let i = 0; i < entry.length; i += 1) {
+      const entries = entry[i].elts.filter(e => entryElts.includes(e.name));
 
-      html.push(entryType(entries));
+      if (entries.length) {
+        state = true;
+
+        entries.forEach(e => {
+          html.push(entryType(e, { elements: entry.length }));
+        });
+      }
     }
+
+    html.push('</div>');
   }
 
   if (!state) {
-    html.push('<p class="custEmpty">No Information</p>');
+    html.push('<div class="custEmpty">no information</div>');
   }
 
   html.push('</div>');
+  html.push('</details>');
 
   return html.join('');
 }

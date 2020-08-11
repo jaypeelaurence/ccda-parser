@@ -1,39 +1,27 @@
 import { render } from 'mustache';
-import { styleInheritance } from '../../template';
 
-let parent = '';
-let children = '';
-
-export default function getPerformer(performer, style?: styleInheritance) {
-  if (style) {
-    if (style.parent) {
-      parent = style.parent;
-    }
-    if (style.children) {
-      children = style.children;
-    }
-  }
-
+export default function getPerformer(performer) {
   const html = [];
 
   const { elts } = performer;
 
-  let functionCode = elts.find(elt => elt.name === 'functionCode');
-  const assignedEntity = elts.find(elt => elt.name === 'assignedEntity');
-  
+  let functionCode = elts.find(e => e.name === 'functionCode');
+  const assignedEntity = elts.find(e => e.name === 'assignedEntity');
+
   if (assignedEntity) {
-    const assignedPerson = assignedEntity.elts.find(elt => elt.name === 'assignedPerson');
+    const assignedPerson = assignedEntity.elts.find(e => e.name === 'assignedPerson');
 
     if (assignedPerson) {
-      const name = assignedPerson.elts.find(elt => elt.name === 'name');    
+      const name = assignedPerson.elts.find(e => e.name === 'name');
 
       if (name) {
-        let given = name.elts.find(elt => elt.name === 'given');
+        let given = name.elts.find(e => e.name === 'given');
         given = given.elts.find(elt => elt.type === 'text');
-        let family = name.elts.find(elt => elt.name === 'family');
+        let family = name.elts.find(e => e.name === 'family');
         family = family.elts.find(elt => elt.type === 'text');
 
-        html.push(`<div class="${['performerDetails', parent].join(' ')}">`);
+        html.push('<div class="performerDetails">');
+        html.push('<div class="custField"><div class="label">Performer:</div><div class="value">');
 
         if (functionCode) {
           functionCode = functionCode.atts;
@@ -41,14 +29,14 @@ export default function getPerformer(performer, style?: styleInheritance) {
           functionCode = {};
         }
 
-        html.push(`<div class="${['label', children].join(' ')}">Performer:</div>`);
+        html.push(
+          `${render(`{{text}}`, given)} ${render(`{{text}}`, family)} <i>${render(
+            `{{displayName}}`,
+            functionCode,
+          )}</i>`,
+        );
 
-        html.push('<div class="value">');
-
-        html.push(`${render(`{{text}}`, given)} ${render(`{{text}}`, family)} <i>${render(`{{displayName}}`, functionCode)}</i>`);
-
-        html.push('</div>');
-        html.push('</div>');
+        html.push('</div></div></div>');
       }
     }
   }
